@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ian O'Reilly Cuts — Barber, Wexford</title>
+<meta name="description" content="Ian O'Reilly Cuts. Modern fades and texture. An independent barber in Wexford.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Archivo:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   IAN O'REILLY CUTS — Wexford
+   Built by Fadezy.
+   PHOTOGRAPHY: every .plate is a placeholder awaiting real
+   client photography. To drop a real image in, add
+   style="--img:url('photo.jpg')" to that .plate element.
+   The label text lives in data-label and tells you what the
+   shot needs to be. Nothing here is stock or fabricated.
+   ============================================================ */
+
+:root{
+  --ink:#080808;
+  --ink-2:#111111;
+  --text:#EAEAEA;
+  --muted:#8C8C8C;
+  --rule:#292929;
+  --accent:#B8B8B8;
+  --white:#FFFFFF;
+
+  --display:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --sans:"Archivo","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+
+  --gutter:clamp(20px,5vw,72px);
+  --ease:cubic-bezier(.16,.84,.34,1);
+  --slow:cubic-bezier(.22,1,.36,1);
+
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+/* brand is a fixed dark identity: tokens hold in both schemes */
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ --ink:#080808; --text:#EAEAEA; } }
+:root[data-theme="dark"]{ --ink:#080808; --text:#EAEAEA; }
+
+html{ scroll-padding-top:env(safe-area-inset-top,0px); -webkit-text-size-adjust:100%; }
+*,*::before,*::after{ box-sizing:border-box; }
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--text);
+  font-family:var(--sans);
+  font-weight:300;
+  font-size:clamp(15px,1.05vw,17px);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; }
+:focus-visible{ outline:1px solid var(--accent); outline-offset:6px; }
+::selection{ background:var(--text); color:var(--ink); }
+
+/* ---------- shared primitives ---------- */
+.mono{
+  font-family:var(--mono);
+  font-weight:300;
+  font-size:clamp(9.5px,.72vw,11px);
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.serif{ font-family:var(--display); font-weight:400; line-height:.92; letter-spacing:-.012em; }
+.rule{ height:1px; background:var(--rule); border:0; margin:0; }
+.sec{ position:relative; padding-inline:var(--gutter); }
+
+/* the signature motif: a hairline with a small solid terminus,
+   used as the tick that marks every important edge on the site */
+.tick{ position:relative; display:block; height:1px; background:var(--rule); }
+.tick::after{ content:""; position:absolute; right:0; top:-2px; width:5px; height:5px; background:var(--accent); }
+
+/* ---------- photography plates ---------- */
+.plate{
+  position:relative;
+  overflow:hidden;
+  background-color:var(--ink-2);
+  background-image:var(--img,none);
+  background-size:cover;
+  background-position:center;
+  border:1px solid var(--rule);
+}
+.plate::before{
+  content:"";
+  position:absolute; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(120% 90% at 30% 15%, rgba(255,255,255,.055), rgba(0,0,0,0) 62%);
+  opacity:.5;
+  mix-blend-mode:screen;
+  pointer-events:none;
+}
+.plate[data-label]::after{
+  content:attr(data-label);
+  position:absolute; left:14px; bottom:12px; right:14px;
+  font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; text-transform:uppercase;
+  color:#6b6b6b;
+  line-height:1.5;
+}
+.plate.is-filled::before{ opacity:.18; }
+.plate.is-filled::after{ display:none; }
+
+/* reveal system — one shared, restrained entrance */
+.r{ opacity:0; transform:translateY(18px); transition:opacity 1s var(--slow), transform 1.1s var(--slow); }
+.r.in{ opacity:1; transform:none; }
+.r-mask{ overflow:hidden; display:block; }
+.r-mask > span{ display:block; transform:translateY(105%); transition:transform 1.15s var(--slow); }
+.r-mask.in > span{ transform:none; }
+.r-img{ clip-path:inset(0 0 100% 0); transition:clip-path 1.3s var(--slow); }
+.r-img.in{ clip-path:inset(0 0 0 0); }
+@media (prefers-reduced-motion:reduce){
+  .r,.r-mask>span,.r-img{ opacity:1 !important; transform:none !important; clip-path:none !important; transition:none !important; }
+  html{ scroll-behavior:auto; }
+}
+
+/* ---------- navigation ---------- */
+.nav{
+  position:fixed; inset:0 0 auto 0; z-index:60;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:20px;
+  padding:18px var(--gutter);
+  padding-top:calc(18px + env(safe-area-inset-top,0px));
+  mix-blend-mode:difference;
+}
+.nav__mark{ display:flex; align-items:baseline; gap:10px; }
+.nav__mark b{ font-family:var(--display); font-weight:400; font-size:19px; letter-spacing:.02em; }
+.nav__mark span{ font-family:var(--mono); font-size:9.5px; letter-spacing:.24em; color:var(--muted); text-transform:uppercase; }
+.nav__links{ display:flex; gap:clamp(16px,2.4vw,34px); }
+.nav__links a{ font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--text); opacity:.72; transition:opacity .4s; }
+.nav__links a:hover{ opacity:1; }
+@media (max-width:760px){ .nav__links{ display:none; } }
+
+/* ============================================================
+   01 — HERO
+   Editorial campaign composition: a tall image slab bleeding off
+   the top-right, the wordmark set on a baseline that crosses it.
+   ============================================================ */
+.hero{
+  position:relative;
+  min-height:100svh;
+  padding-top:clamp(120px,16vh,190px);
+  padding-bottom:clamp(28px,5vh,56px);
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  grid-template-rows:1fr auto;
+  column-gap:clamp(12px,2vw,28px);
+  overflow:hidden;
+}
+.hero__plate{
+  grid-column:7 / 12;
+  grid-row:1 / 2;
+  margin-top:calc(-1 * clamp(120px,16vh,190px));
+  height:calc(100% + clamp(120px,16vh,190px));
+  border-top:0;
+  will-change:transform;
+}
+.hero__type{
+  grid-column:1 / 9;
+  grid-row:1 / 2;
+  align-self:end;
+  position:relative; z-index:3;
+  pointer-events:none;
+  mix-blend-mode:difference;
+  padding-bottom:clamp(10px,4vh,40px);
+}
+.hero__l1,.hero__l2{
+  font-family:var(--display); font-weight:400;
+  line-height:.82; letter-spacing:-.022em;
+  font-size:clamp(58px,12.2vw,185px);
+}
+.hero__l2{ padding-left:clamp(40px,14vw,220px); }
+.hero__l2 em{ font-style:italic; }
+.hero__edge{
+  position:absolute; left:calc(var(--gutter) * -1 + 8px); top:38%;
+  transform:rotate(-90deg); transform-origin:left top;
+  font-family:var(--mono); font-size:10px; letter-spacing:.34em; text-transform:uppercase; color:var(--muted);
+  z-index:4;
+}
+.hero__foot{
+  grid-column:1 / 13; grid-row:2 / 3;
+  display:flex; align-items:flex-end; justify-content:space-between; gap:24px;
+  border-top:1px solid var(--rule);
+  padding-top:16px;
+  position:relative; z-index:5;
+}
+.hero__claim{ font-size:clamp(14px,1.3vw,18px); color:var(--text); max-width:30ch; line-height:1.45; }
+.hero__claim small{ display:block; margin-top:6px; }
+.book-line{
+  position:relative;
+  display:inline-flex; align-items:baseline; gap:12px;
+  font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--text);
+  padding-bottom:7px;
+  white-space:nowrap;
+}
+.book-line::after{
+  content:""; position:absolute; left:0; bottom:0; height:1px; width:100%;
+  background:var(--accent); transform-origin:right; transform:scaleX(.24);
+  transition:transform .7s var(--slow);
+}
+.book-line:hover::after,.book-line:focus-visible::after{ transform:scaleX(1); transform-origin:left; }
+.book-line i{ font-style:normal; color:var(--muted); }
+
+@media (max-width:860px){
+  .hero{ grid-template-columns:1fr; grid-template-rows:auto auto auto; padding-top:calc(96px + env(safe-area-inset-top,0px)); }
+  .hero__plate{ grid-column:1; grid-row:1; margin:0 calc(var(--gutter) * -1); height:52svh; border-inline:0; }
+  .hero__type{ grid-column:1; grid-row:2; margin-top:-34px; padding-bottom:26px; }
+  .hero__l2{ padding-left:22vw; }
+  .hero__edge{ display:none; }
+  .hero__foot{ grid-row:3; flex-direction:column; align-items:flex-start; gap:22px; }
+}
+
+/* ============================================================
+   02 — INTRO. Type is the whole picture. Nothing else.
+   ============================================================ */
+.intro{ padding-block:clamp(110px,18vh,220px); position:relative; }
+.intro__meta{ display:flex; gap:clamp(18px,4vw,60px); padding-bottom:18px; }
+.intro__stmt{
+  font-family:var(--display); font-weight:400;
+  font-size:clamp(34px,6.6vw,104px); line-height:1.02; letter-spacing:-.018em;
+  padding-block:clamp(26px,5vh,54px);
+  max-width:16ch;
+}
+.intro__stmt .ln2{ display:block; padding-left:clamp(30px,10vw,180px); }
+.intro__body{
+  display:grid; grid-template-columns:repeat(12,1fr); gap:clamp(16px,2.4vw,32px);
+  padding-top:clamp(26px,5vh,54px);
+}
+.intro__body p{ grid-column:6 / 11; margin:0; max-width:52ch; color:var(--accent); line-height:1.75; }
+.intro__body p + p{ margin-top:1.1em; color:var(--muted); }
+.intro__note{ grid-column:1 / 4; }
+@media (max-width:860px){
+  .intro__body p,.intro__note{ grid-column:1 / -1; }
+  .intro__note{ margin-bottom:22px; }
+  .intro__stmt{ max-width:none; }
+  .intro__stmt .ln2{ padding-left:14vw; }
+}
+
+/* ============================================================
+   03 — THE CRAFT. A luxury index, not a card grid.
+   Each row opens in place; a preview plate tracks the cursor.
+   ============================================================ */
+.craft{ padding-block:clamp(70px,10vh,120px); }
+.craft__head{ display:flex; justify-content:space-between; align-items:flex-end; gap:28px; padding-bottom:clamp(26px,5vh,52px); }
+.craft__head h2{ font-family:var(--display); font-weight:400; font-size:clamp(26px,3.4vw,46px); margin:0; letter-spacing:-.01em; }
+.craft__list{ border-top:1px solid var(--rule); }
+.row{ border-bottom:1px solid var(--rule); }
+.row__bar{
+  width:100%; text-align:left;
+  display:grid; grid-template-columns:auto 1fr auto; align-items:baseline;
+  gap:clamp(14px,3vw,44px);
+  padding-block:clamp(18px,2.6vh,30px);
+  transition:padding-left .7s var(--slow), color .5s;
+}
+.row__bar:hover,.row__bar[aria-expanded="true"]{ padding-left:clamp(8px,1.6vw,26px); }
+.row__idx{ font-family:var(--mono); font-size:10px; letter-spacing:.18em; color:var(--muted); }
+.row__name{ font-family:var(--display); font-weight:400; font-size:clamp(28px,5.2vw,74px); line-height:1; letter-spacing:-.015em; }
+.row__bar:hover .row__name{ color:var(--white); }
+.row__price{ font-family:var(--mono); font-size:11px; color:var(--muted); letter-spacing:.1em; }
+.row__panel{ height:0; overflow:hidden; transition:height .75s var(--slow); }
+.row__inner{
+  display:grid; grid-template-columns:repeat(12,1fr); gap:clamp(16px,2.4vw,32px);
+  padding:0 0 clamp(26px,4vh,44px) clamp(8px,1.6vw,26px);
+}
+.row__inner p{ grid-column:4 / 9; margin:0; color:var(--accent); max-width:54ch; }
+.row__inner .mono{ grid-column:1 / 4; }
+.row__inner .plate{ grid-column:10 / 13; aspect-ratio:4/5; }
+.craft__preview{
+  position:fixed; top:0; left:0; z-index:40;
+  width:min(23vw,300px); aspect-ratio:4/5;
+  pointer-events:none; opacity:0;
+  transform:translate3d(-50%,-50%,0) scale(.94);
+  transition:opacity .45s var(--ease), transform .7s var(--slow);
+}
+.craft__preview.on{ opacity:1; transform:translate3d(-50%,-50%,0) scale(1); }
+@media (max-width:900px){
+  .row__inner p,.row__inner .mono{ grid-column:1 / -1; }
+  .row__inner .plate{ grid-column:1 / -1; aspect-ratio:16/10; margin-top:18px; }
+  .craft__preview{ display:none; }
+  .row__bar{ grid-template-columns:auto 1fr; }
+  .row__price{ grid-column:2; grid-row:2; }
+}
+
+/* ============================================================
+   04 — THE WORK. Cinematic horizontal run.
+   ============================================================ */
+.work{ padding-block:clamp(80px,12vh,150px) clamp(60px,9vh,110px); padding-inline:0; }
+.work__head{ display:flex; justify-content:space-between; align-items:flex-end; gap:24px; padding:0 var(--gutter) clamp(28px,5vh,56px); }
+.work__head h2{ font-family:var(--display); font-weight:400; font-size:clamp(30px,5vw,72px); margin:0; line-height:.95; letter-spacing:-.015em; }
+.track{
+  display:flex; align-items:center; gap:clamp(18px,3vw,56px);
+  padding-inline:var(--gutter);
+  overflow-x:auto; overscroll-behavior-x:contain;
+  scroll-snap-type:x proximity;
+  scrollbar-width:none; cursor:grab;
+}
+.track::-webkit-scrollbar{ display:none; }
+.track.drag{ cursor:grabbing; scroll-snap-type:none; }
+.shot{ flex:0 0 auto; scroll-snap-align:center; position:relative; }
+.shot .plate{ height:clamp(320px,62vh,640px); width:auto; aspect-ratio:var(--ar,3/4); }
+.shot__cap{ display:flex; justify-content:space-between; gap:16px; padding-top:12px; }
+.shot--lift{ margin-bottom:clamp(40px,9vh,110px); }
+.shot--drop{ margin-top:clamp(40px,9vh,110px); }
+.shot--wide{ --ar:4/3; }
+.shot--tall{ --ar:2/3; }
+.work__foot{ display:flex; align-items:center; gap:18px; padding:clamp(22px,4vh,44px) var(--gutter) 0; }
+.progress{ position:relative; flex:1; height:1px; background:var(--rule); }
+.progress i{ position:absolute; left:0; top:-1px; height:3px; background:var(--accent); width:14%; transition:width .2s linear, left .2s linear; }
+@media (max-width:860px){ .shot .plate{ height:58svh; } .shot--lift,.shot--drop{ margin-block:0; } }
+
+/* ============================================================
+   05 — THE DETAIL. Three lines, three plates, three speeds.
+   ============================================================ */
+.detail{ padding-block:clamp(110px,18vh,220px); position:relative; background:var(--ink-2); }
+.detail__grid{ display:grid; grid-template-columns:repeat(12,1fr); gap:clamp(14px,2vw,28px); align-items:center; }
+.detail__line{ font-family:var(--display); font-weight:400; font-size:clamp(34px,7vw,110px); line-height:.98; letter-spacing:-.02em; }
+.d1{ grid-column:1 / 8; }
+.d2{ grid-column:4 / 12; text-align:right; }
+.d3{ grid-column:2 / 9; }
+.d3 em{ font-style:italic; color:var(--accent); }
+.detail__p1{ grid-column:9 / 13; grid-row:1 / 2; aspect-ratio:3/4; will-change:transform; }
+.detail__p2{ grid-column:1 / 4; grid-row:2 / 4; aspect-ratio:3/4; margin-block:clamp(20px,5vh,60px); will-change:transform; }
+.detail__note{ grid-column:9 / 13; padding-top:clamp(20px,4vh,40px); }
+.detail__note p{ margin:12px 0 0; color:var(--muted); max-width:34ch; }
+@media (max-width:860px){
+  .detail__grid{ grid-template-columns:1fr; }
+  .d1,.d2,.d3,.detail__note{ grid-column:1; text-align:left; }
+  .d2{ padding-left:18vw; }
+  .detail__p1,.detail__p2{ grid-column:1; grid-row:auto; width:62%; margin-block:clamp(18px,4vh,40px); }
+  .detail__p2{ margin-left:38%; }
+}
+
+/* ============================================================
+   06 — IAN. Portrait with the name breaking across it.
+   ============================================================ */
+.ian{ padding-block:clamp(110px,18vh,210px); }
+.ian__stage{ position:relative; display:grid; grid-template-columns:repeat(12,1fr); gap:clamp(14px,2vw,28px); }
+.ian__plate{ grid-column:1 / 7; aspect-ratio:4/5; }
+.ian__name{
+  grid-column:4 / 13; align-self:center;
+  font-family:var(--display); font-weight:400;
+  font-size:clamp(46px,10.5vw,158px); line-height:.86; letter-spacing:-.025em;
+  mix-blend-mode:difference; pointer-events:none;
+  position:relative; z-index:3;
+}
+.ian__name em{ font-style:italic; display:block; padding-left:.18em; }
+.ian__story{ grid-column:8 / 13; padding-top:clamp(20px,4vh,42px); }
+.ian__story p{ margin:0 0 1.05em; color:var(--accent); max-width:46ch; }
+.ian__story p:last-child{ color:var(--muted); }
+.ian__facts{ grid-column:1 / 7; display:flex; gap:clamp(20px,4vw,56px); padding-top:clamp(20px,4vh,42px); }
+.ian__facts div span{ display:block; font-family:var(--display); font-size:clamp(22px,2.6vw,34px); color:var(--text); margin-top:6px; }
+@media (max-width:860px){
+  .ian__stage{ grid-template-columns:1fr; }
+  .ian__plate{ grid-column:1; width:78%; }
+  .ian__name{ grid-column:1; margin-top:-16%; padding-left:6vw; }
+  .ian__story,.ian__facts{ grid-column:1; }
+}
+
+/* ============================================================
+   07 — WEXFORD. Full-bleed room, information laid over it.
+   ============================================================ */
+.place{ padding-inline:0; position:relative; }
+.place__stage{ position:relative; min-height:clamp(480px,88svh,900px); display:flex; align-items:flex-end; overflow:hidden; }
+.place__plate{ position:absolute; inset:-8% 0; border-inline:0; }
+.place__wash{ position:absolute; inset:0; background:linear-gradient(180deg,rgba(8,8,8,.62) 0%,rgba(8,8,8,.18) 38%,rgba(8,8,8,.92) 100%); }
+.place__word{
+  position:absolute; left:0; top:clamp(60px,14vh,140px);
+  font-family:var(--display); font-weight:400; font-size:clamp(70px,17vw,260px); line-height:.8;
+  color:transparent; -webkit-text-stroke:1px rgba(234,234,234,.34);
+  white-space:nowrap; will-change:transform;
+}
+.place__panel{ position:relative; z-index:4; width:100%; padding:0 var(--gutter) clamp(34px,6vh,70px); }
+.place__panel h2{ font-family:var(--display); font-weight:400; font-size:clamp(26px,3.6vw,50px); margin:0 0 18px; max-width:18ch; letter-spacing:-.01em; }
+.place__lines{ display:flex; flex-wrap:wrap; gap:clamp(18px,4vw,64px); border-top:1px solid rgba(234,234,234,.22); padding-top:18px; }
+.place__lines div span{ display:block; color:var(--text); margin-top:6px; font-size:14px; }
+.place__copy{ color:var(--accent); max-width:44ch; margin:0 0 22px; }
+
+/* ============================================================
+   08 — BOOKING. Near-empty. One oversized line, one quiet flow.
+   ============================================================ */
+.book{ padding-block:clamp(100px,16vh,190px); }
+.book__title{ font-family:var(--display); font-weight:400; font-size:clamp(52px,13.5vw,220px); line-height:.82; letter-spacing:-.03em; margin:0; }
+.book__grid{ display:grid; grid-template-columns:repeat(12,1fr); gap:clamp(16px,2.4vw,32px); padding-top:clamp(34px,6vh,70px); }
+.book__aside{ grid-column:1 / 4; }
+.book__aside p{ margin:12px 0 0; color:var(--muted); max-width:28ch; }
+.book__flow{ grid-column:5 / 13; }
+.field{ border-top:1px solid var(--rule); padding-block:clamp(16px,2.4vh,26px); display:grid; grid-template-columns:auto 1fr; gap:clamp(14px,3vw,40px); align-items:start; }
+.opts{ display:flex; flex-wrap:wrap; gap:8px 26px; }
+.opt{
+  position:relative; padding:4px 0 6px;
+  font-family:var(--display); font-size:clamp(18px,2vw,27px); line-height:1.1;
+  color:var(--muted); transition:color .45s var(--ease);
+}
+.opt::after{ content:""; position:absolute; left:0; bottom:0; width:100%; height:1px; background:var(--accent); transform:scaleX(0); transform-origin:right; transition:transform .55s var(--slow); }
+.opt:hover{ color:var(--accent); }
+.opt[aria-pressed="true"]{ color:var(--white); }
+.opt[aria-pressed="true"]::after{ transform:scaleX(1); transform-origin:left; }
+.opt--time{ font-family:var(--mono); font-size:13px; letter-spacing:.06em; }
+.book__confirm{ border-top:1px solid var(--rule); margin-top:4px; padding-top:clamp(20px,3.4vh,34px); display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap; }
+.book__summary{ font-family:var(--display); font-size:clamp(19px,2.3vw,32px); line-height:1.25; color:var(--text); max-width:24ch; }
+.book__summary b{ font-weight:400; color:var(--muted); }
+.magnet{ display:inline-block; will-change:transform; transition:transform .5s var(--slow); }
+.book__done{ font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); margin-top:16px; min-height:17px; }
+@media (max-width:900px){ .book__aside,.book__flow{ grid-column:1 / -1; } .book__aside{ margin-bottom:26px; } .field{ grid-template-columns:1fr; gap:12px; } }
+
+/* ============================================================
+   09 — DETAILS. Hairlines and type. No cards.
+   ============================================================ */
+.info{ padding-block:clamp(70px,11vh,140px); }
+.info__row{ display:grid; grid-template-columns:repeat(12,1fr); gap:clamp(14px,2.4vw,32px); border-top:1px solid var(--rule); padding-block:clamp(18px,3vh,30px); }
+.info__row:last-of-type{ border-bottom:1px solid var(--rule); }
+.info__row dt{ grid-column:1 / 4; }
+.info__row dd{ grid-column:5 / 10; margin:0; font-size:clamp(15px,1.3vw,19px); color:var(--text); }
+.info__row dd small{ display:block; color:var(--muted); font-size:13px; margin-top:4px; }
+.info__row .mono.r-al{ grid-column:11 / 13; text-align:right; }
+@media (max-width:860px){ .info__row dt{ grid-column:1 / -1; } .info__row dd{ grid-column:1 / -1; margin-top:8px; } .info__row .mono.r-al{ display:none; } }
+
+/* ============================================================
+   10 — FOOTER
+   ============================================================ */
+.foot{ padding:clamp(40px,7vh,80px) var(--gutter) calc(clamp(22px,4vh,40px) + env(safe-area-inset-bottom,0px)); border-top:1px solid var(--rule); }
+.foot__mark{ font-family:var(--display); font-weight:400; font-size:clamp(34px,10.6vw,168px); line-height:.86; letter-spacing:-.028em; margin:0 0 clamp(26px,5vh,56px); }
+.foot__bar{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:18px 34px; border-top:1px solid var(--rule); padding-top:18px; }
+.foot__bar a{ transition:color .4s; }
+.foot__bar a:hover{ color:var(--text); }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="nav">
+  <a class="nav__mark" href="#top" aria-label="Ian O'Reilly Cuts, back to top">
+    <b>Ian O&rsquo;Reilly Cuts</b><span>Wexford</span>
+  </a>
+  <div class="nav__links">
+    <a href="#craft">The craft</a>
+    <a href="#work">The work</a>
+    <a href="#ian">Ian</a>
+    <a href="#place">The room</a>
+    <a href="#book">Book</a>
+  </div>
+</nav>
+
+<!-- ============ 01 — HERO ============ -->
+<header class="hero sec" id="top">
+  <div class="plate hero__plate r-img" data-parallax="-40"
+       data-label="Hero photograph — Ian mid-cut, close crop over the shoulder, shot tall. Low key, single window light, no flash."></div>
+
+  <div class="hero__type">
+    <div class="hero__l1 r-mask"><span>Ian O&rsquo;Reilly</span></div>
+    <div class="hero__l2 r-mask"><span><em>Cuts</em></span></div>
+  </div>
+
+  <span class="hero__edge r">Est. Wexford &middot; Modern fades &amp; texture</span>
+
+  <div class="hero__foot">
+    <p class="hero__claim r">Modern fades and texture, cut one chair at a time.<small class="mono">Wexford, Ireland</small></p>
+    <a class="book-line r" href="#book"><span>Take a chair</span> <i>Next availability inside</i></a>
+  </div>
+</header>
+
+<!-- ============ 02 — INTRO ============ -->
+<section class="intro sec">
+  <div class="intro__meta r">
+    <span class="mono">Independent barber</span>
+    <span class="mono">Cuts by appointment</span>
+  </div>
+  <span class="tick r"></span>
+
+  <h2 class="intro__stmt">
+    <span class="r-mask"><span>Precision in every cut.</span></span>
+    <span class="ln2 r-mask"><span>Character in every detail.</span></span>
+  </h2>
+
+  <span class="tick r"></span>
+
+  <div class="intro__body">
+    <span class="mono intro__note r">On the approach</span>
+    <p class="r">A cut here starts with your hair, not with a chart on the wall. How it grows, where it splits, what it does on the third day when nobody is watching it. Ian works to that, then builds the shape around it.</p>
+    <p class="r">Fades kept clean and low-contrast where the head asks for it, sharper where it doesn&rsquo;t. Texture cut in by hand rather than sprayed on afterwards. You should be able to leave, wash it, and still have the same haircut in the morning.</p>
+  </div>
+</section>
+
+<!-- ============ 03 — THE CRAFT ============ -->
+<section class="craft sec" id="craft">
+  <div class="craft__head">
+    <h2 class="r-mask"><span>The craft</span></h2>
+    <span class="mono r">Select a service to read more</span>
+  </div>
+
+  <div class="craft__list" id="craftList">
+    <!-- PLACEHOLDER: prices to be confirmed with Ian before launch -->
+    <article class="row r">
+      <button class="row__bar" aria-expanded="false" data-img="Skin fade, back of head, hard light">
+        <span class="row__idx">01</span>
+        <span class="row__name">Skin fade</span>
+        <span class="row__price mono">&euro; &mdash;</span>
+      </button>
+      <div class="row__panel"><div class="row__inner">
+        <span class="mono">45 minutes</span>
+        <p>Taken down to the skin and walked back up with no line left behind. Cut dry so the fade is read in the light it will actually be seen in, then finished round the ear and the neck by razor.</p>
+        <div class="plate" data-label="Skin fade — back of head, hard light, close on the blend"></div>
+      </div></div>
+    </article>
+
+    <article class="row r">
+      <button class="row__bar" aria-expanded="false" data-img="Modern fade, three-quarter profile">
+        <span class="row__idx">02</span>
+        <span class="row__name">Modern fade</span>
+        <span class="row__price mono">&euro; &mdash;</span>
+      </button>
+      <div class="row__panel"><div class="row__inner">
+        <span class="mono">45 minutes</span>
+        <p>A softer drop through the sides with weight kept on top. The everyday cut &mdash; sharp for the first fortnight, still wearable at the fifth week.</p>
+        <div class="plate" data-label="Modern fade — three-quarter profile, weight left on top"></div>
+      </div></div>
+    </article>
+
+    <article class="row r">
+      <button class="row__bar" aria-expanded="false" data-img="Scissor cut in progress">
+        <span class="row__idx">03</span>
+        <span class="row__name">Scissor cut</span>
+        <span class="row__price mono">&euro; &mdash;</span>
+      </button>
+      <div class="row__panel"><div class="row__inner">
+        <span class="mono">45 minutes</span>
+        <p>No machine near it. Length removed section by section so the shape holds as it grows out, for longer hair, heavier fringes and anyone growing something back.</p>
+        <div class="plate" data-label="Scissor work — hands and shears, shallow depth of field"></div>
+      </div></div>
+    </article>
+
+    <article class="row r">
+      <button class="row__bar" aria-expanded="false" data-img="Textured crop, front on">
+        <span class="row__idx">04</span>
+        <span class="row__name">Textured style</span>
+        <span class="row__price mono">&euro; &mdash;</span>
+      </button>
+      <div class="row__panel"><div class="row__inner">
+        <span class="mono">50 minutes</span>
+        <p>Crops, quiffs and anything that needs movement rather than a set shape. Point-cut through the top to take weight out without taking length, then styled with as little product as it can stand.</p>
+        <div class="plate" data-label="Textured crop — front on, natural movement, finished dry"></div>
+      </div></div>
+    </article>
+
+    <article class="row r">
+      <button class="row__bar" aria-expanded="false" data-img="Beard line-up, close detail">
+        <span class="row__idx">05</span>
+        <span class="row__name">Beard &amp; grooming</span>
+        <span class="row__price mono">&euro; &mdash;</span>
+      </button>
+      <div class="row__panel"><div class="row__inner">
+        <span class="mono">30 minutes</span>
+        <p>Shaped to the jaw rather than to a straight line, cheek and neck set by razor, hot towel to finish. Add it to any cut or take it on its own.</p>
+        <div class="plate" data-label="Beard detail — razor line at the cheek, hot towel steam"></div>
+      </div></div>
+    </article>
+  </div>
+</section>
+<div class="plate craft__preview" id="craftPreview" data-label=""></div>
+
+<!-- ============ 04 — THE WORK ============ -->
+<section class="work" id="work">
+  <div class="work__head">
+    <h2 class="r-mask"><span>The work</span></h2>
+    <span class="mono r">Drag, scroll or swipe</span>
+  </div>
+
+  <div class="track" id="track">
+    <figure class="shot shot--tall r-img" style="margin:0">
+      <div class="plate" data-label="01 — Fade. Back of head, tight crop on the blend."></div>
+      <figcaption class="shot__cap"><span class="mono">01 &mdash; Fade</span><span class="mono">Skin</span></figcaption>
+    </figure>
+    <figure class="shot shot--drop r-img" style="margin-inline:0">
+      <div class="plate" data-label="02 — Texture. Top of the head from above, movement visible."></div>
+      <figcaption class="shot__cap"><span class="mono">02 &mdash; Texture</span><span class="mono">Crop</span></figcaption>
+    </figure>
+    <figure class="shot shot--wide r-img" style="margin:0">
+      <div class="plate" data-label="03 — Detail. Razor at the neckline, hands in frame."></div>
+      <figcaption class="shot__cap"><span class="mono">03 &mdash; Detail</span><span class="mono">Finish</span></figcaption>
+    </figure>
+    <figure class="shot shot--lift r-img" style="margin-inline:0">
+      <div class="plate" data-label="04 — Line. Beard and cheek line, side light."></div>
+      <figcaption class="shot__cap"><span class="mono">04 &mdash; Line</span><span class="mono">Beard</span></figcaption>
+    </figure>
+    <figure class="shot shot--tall r-img" style="margin:0">
+      <div class="plate" data-label="05 — Shape. Full head, front on, finished and dry."></div>
+      <figcaption class="shot__cap"><span class="mono">05 &mdash; Shape</span><span class="mono">Scissor</span></figcaption>
+    </figure>
+    <figure class="shot shot--wide shot--drop r-img" style="margin-inline:0">
+      <div class="plate" data-label="06 — Chair. The room mid-cut, wide, nobody looking at the camera."></div>
+      <figcaption class="shot__cap"><span class="mono">06 &mdash; Chair</span><span class="mono">Room</span></figcaption>
+    </figure>
+  </div>
+
+  <div class="work__foot">
+    <span class="mono" id="trackCount">01 / 06</span>
+    <span class="progress"><i id="trackBar"></i></span>
+  </div>
+</section>
+
+<!-- ============ 05 — THE DETAIL ============ -->
+<section class="detail sec">
+  <div class="detail__grid">
+    <h2 class="detail__line d1 r-mask"><span>Sharp lines.</span></h2>
+    <div class="plate detail__p1 r-img" data-parallax="-60" data-label="Close detail — the neckline, freshly razored."></div>
+    <h2 class="detail__line d2 r-mask"><span>Natural texture.</span></h2>
+    <div class="plate detail__p2 r-img" data-parallax="42" data-label="Close detail — hair between the fingers, mid-cut."></div>
+    <h2 class="detail__line d3 r-mask"><span><em>Individual style.</em></span></h2>
+    <div class="detail__note r">
+      <span class="tick"></span>
+      <p>Three things decided before the first pass, and nothing in the cut that argues with them afterwards.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 — IAN ============ -->
+<section class="ian sec" id="ian">
+  <div class="ian__stage">
+    <div class="plate ian__plate r-img" data-label="Portrait — Ian at the chair, half turned, working light only."></div>
+    <h2 class="ian__name">
+      <span class="r-mask"><span>Ian</span></span>
+      <span class="r-mask"><span><em>O&rsquo;Reilly</em></span></span>
+    </h2>
+    <div class="ian__story">
+      <p class="r">Ian cuts on his own, by appointment, which is the whole point. One chair means the fade gets the time it needs and nobody is being rushed out for the next name on a list.</p>
+      <p class="r">Time behind the chair has gone into one thing: fades that sit flat against the head, and texture that still looks cut rather than styled once the product is washed out.</p>
+    </div>
+    <div class="ian__facts r">
+      <div><span class="mono">Chairs</span><span>One</span></div>
+      <div><span class="mono">Booking</span><span>By appointment</span></div>
+      <div><span class="mono">Based</span><span>Wexford</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 — WEXFORD ============ -->
+<section class="place sec" id="place">
+  <div class="place__stage">
+    <div class="plate place__plate r-img" data-parallax="-30" data-label="The room — wide interior, chair and mirror, warm practical lighting, empty."></div>
+    <div class="place__wash"></div>
+    <span class="place__word" data-drift="-120">Wexford</span>
+    <div class="place__panel">
+      <h2 class="r-mask"><span>A small room off the town</span></h2>
+      <p class="place__copy r">Low light, one chair, a record on more often than not. You&rsquo;re in for the cut and the conversation that comes with it, and there&rsquo;s no queue watching you from the bench.</p>
+      <div class="place__lines r">
+        <div><span class="mono">Find it</span><span>Wexford town <small class="mono">&mdash; street address to confirm</small></span></div>
+        <div><span class="mono">Parking</span><span>Street parking outside</span></div>
+        <div><span class="mono">Getting in</span><span>Appointment only</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 08 — BOOKING ============ -->
+<section class="book sec" id="book">
+  <h2 class="book__title">
+    <span class="r-mask"><span>Your next</span></span>
+    <span class="r-mask"><span><em>cut.</em></span></span>
+  </h2>
+
+  <div class="book__grid">
+    <div class="book__aside r">
+      <span class="tick"></span>
+      <p>Pick the three things below and Ian gets the request with your name on it. No account, no card.</p>
+    </div>
+
+    <div class="book__flow">
+      <div class="field r">
+        <span class="mono">Service</span>
+        <div class="opts" data-group="service">
+          <button class="opt" aria-pressed="false">Skin fade</button>
+          <button class="opt" aria-pressed="false">Modern fade</button>
+          <button class="opt" aria-pressed="false">Scissor cut</button>
+          <button class="opt" aria-pressed="false">Textured style</button>
+          <button class="opt" aria-pressed="false">Beard</button>
+        </div>
+      </div>
+
+      <div class="field r">
+        <span class="mono">Day</span>
+        <div class="opts" data-group="day" id="dayOpts"></div>
+      </div>
+
+      <div class="field r">
+        <span class="mono">Time</span>
+        <div class="opts" data-group="time">
+          <button class="opt opt--time" aria-pressed="false">09:30</button>
+          <button class="opt opt--time" aria-pressed="false">11:00</button>
+          <button class="opt opt--time" aria-pressed="false">13:30</button>
+          <button class="opt opt--time" aria-pressed="false">15:00</button>
+          <button class="opt opt--time" aria-pressed="false">16:30</button>
+          <button class="opt opt--time" aria-pressed="false">18:00</button>
+        </div>
+      </div>
+
+      <div class="book__confirm r">
+        <p class="book__summary" id="bookSummary"><b>A</b> cut, <b>on a</b> day, <b>at a</b> time.</p>
+        <div>
+          <!-- PLACEHOLDER: point this at Ian's booking system or phone number -->
+          <a class="book-line magnet" href="#book" id="bookSend"><span>Send the request</span></a>
+          <p class="book__done mono" id="bookDone" role="status"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 09 — DETAILS ============ -->
+<section class="info sec" id="info">
+  <dl style="margin:0">
+    <div class="info__row r">
+      <dt class="mono">Location</dt>
+      <dd>Wexford town, Ireland<small>Full street address to confirm</small></dd>
+      <span class="mono r-al">Ireland</span>
+    </div>
+    <div class="info__row r">
+      <dt class="mono">Opening hours</dt>
+      <dd>Tuesday to Saturday<small>Exact hours to confirm</small></dd>
+      <span class="mono r-al">By appointment</span>
+    </div>
+    <div class="info__row r">
+      <dt class="mono">Contact</dt>
+      <dd><a class="book-line" href="tel:">Phone number to confirm</a></dd>
+      <span class="mono r-al">Direct</span>
+    </div>
+    <div class="info__row r">
+      <dt class="mono">Booking</dt>
+      <dd><a class="book-line" href="#book">Request a chair</a></dd>
+      <span class="mono r-al">Online</span>
+    </div>
+    <div class="info__row r">
+      <dt class="mono">Instagram</dt>
+      <dd><a class="book-line" href="#" rel="noopener">Handle to confirm</a></dd>
+      <span class="mono r-al">Daily</span>
+    </div>
+  </dl>
+</section>
+
+<!-- ============ 10 — FOOTER ============ -->
+<footer class="foot">
+  <p class="foot__mark r-mask"><span>Ian O&rsquo;Reilly Cuts</span></p>
+  <div class="foot__bar mono">
+    <span>Wexford, Ireland</span>
+    <a href="#">Instagram</a>
+    <a href="#book">Booking</a>
+    <a href="#info">Contact</a>
+    <span>&copy; <span id="yr"></span></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* --- any plate given a real --img is marked so the grain drops back --- */
+  document.querySelectorAll(".plate").forEach(function(p){
+    if(getComputedStyle(p).getPropertyValue("--img").trim() !== "") p.classList.add("is-filled");
+  });
+
+  /* --- reveals: one shared, restrained entrance --- */
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      e.target.classList.add("in");
+      io.unobserve(e.target);
+    });
+  },{ rootMargin:"0px 0px -12% 0px", threshold:.08 });
+  document.querySelectorAll(".r,.r-mask,.r-img").forEach(function(el,i){
+    el.style.transitionDelay = (Math.min(i,3) * 70) + "ms";
+    io.observe(el);
+  });
+
+  /* --- smooth anchors --- */
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener("click", function(ev){
+      var id = a.getAttribute("href");
+      if(id.length < 2) return;
+      var t = document.querySelector(id);
+      if(!t) return;
+      ev.preventDefault();
+      t.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block:"start" });
+    });
+  });
+
+  /* --- 03 — service index: open in place, preview follows the cursor --- */
+  var preview = document.getElementById("craftPreview");
+  var fine = window.matchMedia("(hover:hover) and (pointer:fine)").matches;
+  var px = 0, py = 0, cx = 0, cy = 0, previewOn = false;
+
+  document.querySelectorAll("#craftList .row__bar").forEach(function(bar){
+    var panel = bar.nextElementSibling;
+    bar.addEventListener("click", function(){
+      var open = bar.getAttribute("aria-expanded") === "true";
+      document.querySelectorAll("#craftList .row__bar").forEach(function(o){
+        if(o === bar) return;
+        o.setAttribute("aria-expanded","false");
+        o.nextElementSibling.style.height = "0px";
+      });
+      bar.setAttribute("aria-expanded", open ? "false" : "true");
+      panel.style.height = open ? "0px" : panel.firstElementChild.offsetHeight + "px";
+      if(!open && preview) preview.classList.remove("on");
+    });
+    if(!fine) return;
+    bar.addEventListener("mouseenter", function(){
+      if(bar.getAttribute("aria-expanded") === "true") return;
+      preview.setAttribute("data-label", bar.getAttribute("data-img") || "");
+      preview.classList.add("on"); previewOn = true;
+    });
+    bar.addEventListener("mouseleave", function(){
+      preview.classList.remove("on"); previewOn = false;
+    });
+  });
+
+  if(fine && preview){
+    window.addEventListener("mousemove", function(e){ px = e.clientX; py = e.clientY; });
+    (function follow(){
+      cx += (px - cx) * .12; cy += (py - cy) * .12;
+      var k = previewOn ? 1 : .94;
+      preview.style.transform = "translate3d(" + cx + "px," + cy + "px,0) translate(-50%,-50%) scale(" + k + ")";
+      requestAnimationFrame(follow);
+    })();
+  }
+  window.addEventListener("resize", function(){
+    document.querySelectorAll('#craftList .row__bar[aria-expanded="true"]').forEach(function(b){
+      b.nextElementSibling.style.height = b.nextElementSibling.firstElementChild.offsetHeight + "px";
+    });
+  });
+
+  /* --- 04 — the horizontal run: wheel, drag, progress --- */
+  var track = document.getElementById("track"),
+      bar = document.getElementById("trackBar"),
+      count = document.getElementById("trackCount"),
+      shots = track ? track.querySelectorAll(".shot") : [];
+
+  function readTrack(){
+    if(!track) return;
+    var max = track.scrollWidth - track.clientWidth;
+    var p = max > 0 ? track.scrollLeft / max : 0;
+    var w = 100 / shots.length;
+    bar.style.width = w + "%";
+    bar.style.left = (p * (100 - w)) + "%";
+    var i = Math.min(shots.length, Math.round(p * (shots.length - 1)) + 1);
+    count.textContent = ("0" + i).slice(-2) + " / " + ("0" + shots.length).slice(-2);
+  }
+  if(track){
+    track.addEventListener("scroll", readTrack, { passive:true });
+    readTrack();
+
+    track.addEventListener("wheel", function(e){
+      if(Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      var max = track.scrollWidth - track.clientWidth;
+      var atStart = track.scrollLeft <= 0 && e.deltaY < 0;
+      var atEnd = track.scrollLeft >= max - 1 && e.deltaY > 0;
+      if(atStart || atEnd) return;      /* hand the page back its scroll */
+      e.preventDefault();
+      track.scrollLeft += e.deltaY;
+    }, { passive:false });
+
+    var down = false, sx = 0, sl = 0, moved = 0;
+    track.addEventListener("pointerdown", function(e){
+      if(e.pointerType === "touch") return;
+      down = true; moved = 0; sx = e.clientX; sl = track.scrollLeft;
+      track.classList.add("drag"); track.setPointerCapture(e.pointerId);
+    });
+    track.addEventListener("pointermove", function(e){
+      if(!down) return;
+      var d = e.clientX - sx; moved = Math.abs(d);
+      track.scrollLeft = sl - d;
+    });
+    ["pointerup","pointercancel"].forEach(function(t){
+      track.addEventListener(t, function(){ down = false; track.classList.remove("drag"); });
+    });
+    track.addEventListener("click", function(e){ if(moved > 6) e.preventDefault(); }, true);
+  }
+
+  /* --- parallax: three plates and one word, nothing else --- */
+  var layers = Array.prototype.slice.call(document.querySelectorAll("[data-parallax],[data-drift]"));
+  var ticking = false;
+  function frame(){
+    ticking = false;
+    var vh = window.innerHeight;
+    layers.forEach(function(el){
+      var r = el.getBoundingClientRect();
+      if(r.bottom < -200 || r.top > vh + 200) return;
+      var mid = (r.top + r.height / 2 - vh / 2) / vh;
+      if(el.hasAttribute("data-drift")){
+        el.style.transform = "translate3d(" + (mid * parseFloat(el.getAttribute("data-drift"))) + "px,0,0)";
+      }else{
+        el.style.transform = "translate3d(0," + (mid * parseFloat(el.getAttribute("data-parallax"))) + "px,0)";
+      }
+    });
+  }
+  if(!reduce && layers.length){
+    window.addEventListener("scroll", function(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }, { passive:true });
+    window.addEventListener("resize", frame);
+    frame();
+  }
+
+  /* --- 08 — booking --- */
+  var days = document.getElementById("dayOpts");
+  if(days){
+    var names = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+    var now = new Date();
+    for(var i = 1; i <= 6; i++){
+      var d = new Date(now.getTime() + i * 86400000);
+      var b = document.createElement("button");
+      b.className = "opt opt--time";
+      b.setAttribute("aria-pressed","false");
+      b.textContent = names[(d.getDay() + 6) % 7] + " " + d.getDate();
+      days.appendChild(b);
+    }
+  }
+
+  var picked = { service:null, day:null, time:null };
+  var summary = document.getElementById("bookSummary");
+  var doneLine = document.getElementById("bookDone");
+
+  function writeSummary(){
+    var s = picked.service ? picked.service.toLowerCase() : "cut";
+    summary.innerHTML =
+      (picked.service ? "" : "<b>A</b> ") + s +
+      (picked.day ? ", " + picked.day : ", <b>on a day</b>") +
+      (picked.time ? " at " + picked.time : " <b>at a time</b>") + ".";
+  }
+  document.querySelectorAll(".opts").forEach(function(group){
+    group.addEventListener("click", function(e){
+      var btn = e.target.closest(".opt");
+      if(!btn) return;
+      group.querySelectorAll(".opt").forEach(function(o){ o.setAttribute("aria-pressed", o === btn ? "true" : "false"); });
+      picked[group.getAttribute("data-group")] = btn.textContent.trim();
+      doneLine.textContent = "";
+      writeSummary();
+    });
+  });
+  writeSummary();
+
+  var send = document.getElementById("bookSend");
+  if(send){
+    send.addEventListener("click", function(e){
+      e.preventDefault();
+      var missing = [];
+      if(!picked.service) missing.push("a service");
+      if(!picked.day) missing.push("a day");
+      if(!picked.time) missing.push("a time");
+      if(missing.length){
+        doneLine.textContent = "Still to pick: " + missing.join(", ");
+        return;
+      }
+      doneLine.textContent = "Request sent. Ian confirms by text.";
+    });
+  }
+
+  /* --- magnetic pull on the one CTA that earns it --- */
+  if(fine && !reduce){
+    document.querySelectorAll(".magnet").forEach(function(m){
+      var wrap = m.parentElement;
+      wrap.addEventListener("mousemove", function(e){
+        var r = m.getBoundingClientRect();
+        var dx = e.clientX - (r.left + r.width / 2);
+        var dy = e.clientY - (r.top + r.height / 2);
+        if(Math.abs(dx) > r.width || Math.abs(dy) > 60){ m.style.transform = ""; return; }
+        m.style.transform = "translate3d(" + dx * .22 + "px," + dy * .3 + "px,0)";
+      });
+      wrap.addEventListener("mouseleave", function(){ m.style.transform = ""; });
+    });
+  }
+
+  document.getElementById("yr").textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
