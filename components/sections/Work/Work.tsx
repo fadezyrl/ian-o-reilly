@@ -137,7 +137,7 @@ export const Work = (): ReactElement => {
 
       <div
         ref={trackRef}
-        className="track-scroll flex touch-pan-x cursor-grab items-center gap-[clamp(18px,3vw,56px)] overflow-x-auto overscroll-x-contain px-gutter snap-x snap-proximity [scrollbar-width:none] [-webkit-overflow-scrolling:touch]"
+        className="track-scroll flex cursor-grab items-center gap-[clamp(18px,3vw,56px)] overflow-x-auto overscroll-x-contain px-gutter snap-x snap-proximity"
       >
         {gallery.map((shot) => (
           <figure
