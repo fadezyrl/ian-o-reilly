@@ -68,17 +68,6 @@ export const Work = (): ReactElement => {
       requestAnimationFrame(readTrack);
     };
 
-    const onWheel = (e: WheelEvent): void => {
-      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
-      const max = track.scrollWidth - track.clientWidth;
-      if (max <= 0) return;
-      const atStart = track.scrollLeft <= 0 && e.deltaY < 0;
-      const atEnd = track.scrollLeft >= max - 1 && e.deltaY > 0;
-      if (atStart || atEnd) return;
-      e.preventDefault();
-      track.scrollLeft += e.deltaY;
-    };
-
     const onPointerDown = (e: PointerEvent): void => {
       if (e.pointerType === "touch") return;
       drag.current = {
@@ -108,7 +97,6 @@ export const Work = (): ReactElement => {
     };
 
     track.addEventListener("scroll", onScroll, { passive: true });
-    track.addEventListener("wheel", onWheel, { passive: false });
     track.addEventListener("pointerdown", onPointerDown);
     track.addEventListener("pointermove", onPointerMove);
     track.addEventListener("pointerup", onPointerUp);
@@ -118,7 +106,6 @@ export const Work = (): ReactElement => {
 
     return () => {
       track.removeEventListener("scroll", onScroll);
-      track.removeEventListener("wheel", onWheel);
       track.removeEventListener("pointerdown", onPointerDown);
       track.removeEventListener("pointermove", onPointerMove);
       track.removeEventListener("pointerup", onPointerUp);
